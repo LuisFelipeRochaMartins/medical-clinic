@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Optional;
 
@@ -20,31 +22,51 @@ public class MedicoController {
 	public MedicoController(MedicoRepository repository) {
 		this.repository = repository;
 	}
+
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<MedicoRecord> getMedico(@PathVariable Integer id) {
+		var medico = repository.getReferenceById(id);
+
+		return ResponseEntity.ok(new MedicoRecord(medico));
+	}
+
 	@GetMapping
-	public Page<MedicoRecord> getAllMedicos(@PageableDefault(size = 10, sort = {"nome"}) Pageable page) {
-		return repository.findAllByAtivoTrue(page).map(MedicoRecord::new);
+	public ResponseEntity<Page<MedicoRecord>> getAllMedicos(@PageableDefault(size = 10, sort = {"nome"}) Pageable page) {
+		var list = repository.findAllByAtivoTrue(page).map(MedicoRecord::new);
+		return ResponseEntity.ok(list);
 	}
 
 	@PostMapping
-	public void insert(@RequestBody @Valid MedicoRecord medico) {
-		repository.save(new Medico(medico));
+	public ResponseEntity<DetalhamentoMedico> insert(@RequestBody @Valid MedicoRecord medico, UriComponentsBuilder uriBuilder) {
+		var doctor = new Medico(medico);
+		repository.save(doctor);
+
+		var uri = uriBuilder.path("/medicos/{id}").buildAndExpand(doctor.getId()).toUri();
+
+		return ResponseEntity.created(uri).body(new DetalhamentoMedico(doctor));
 	}
 
 	@PutMapping
 	@Transactional
-	public void update(@RequestBody @Valid MedicoUpdateRecord record) {
+	public ResponseEntity<DetalhamentoMedico> update(@RequestBody @Valid MedicoUpdateRecord record) {
 		Optional<Medico> medico = repository.findById(record.id());
 
-		medico.ifPresent(m -> m.updateInfo(record));
+		if (medico.isPresent()) {
+			medico.get().updateInfo(record);
+		}
+
+		return ResponseEntity.ok(new DetalhamentoMedico(medico.get()));
 	}
 
-	@DeleteMapping(path = "{id}")
+	@DeleteMapping(path = "/{id}")
 	@Transactional
-	public void delete(@PathVariable Integer id) {
+	public ResponseEntity delete(@PathVariable Integer id) {
 		Optional<Medico> medico = repository.findById(id);
 
 		if (medico.isPresent()) {
 			medico.get().inativar();
 		}
+
+		return ResponseEntity.noContent().build();
 	}
 }

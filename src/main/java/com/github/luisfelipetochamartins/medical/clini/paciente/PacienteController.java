@@ -25,9 +25,13 @@ public class PacienteController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<DetalhamentoPaciente> getPaciente(@PathVariable Integer id) {
-		var paciente = repository.getReferenceById(id);
+		var paciente = repository.findById(id);
 
-		return ResponseEntity.ok(new DetalhamentoPaciente(paciente));
+		if (paciente.isPresent()) {
+			return ResponseEntity.ok(new DetalhamentoPaciente(paciente.get()));
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@GetMapping
@@ -52,9 +56,12 @@ public class PacienteController {
 	public ResponseEntity<DetalhamentoPaciente> update(@RequestBody @Valid PacienteUpdateRecord record) {
 		Optional<Paciente> paciente = repository.findById(record.id());
 
-		paciente.ifPresent(value -> value.updateInfo(record));
-
-		return ResponseEntity.ok(new DetalhamentoPaciente(paciente.get()));
+		if (paciente.isPresent()) {
+			paciente.get().updateInfo(record);
+			return ResponseEntity.ok(new DetalhamentoPaciente(paciente.get()));
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@DeleteMapping
@@ -62,8 +69,11 @@ public class PacienteController {
 	public ResponseEntity delete(@PathVariable Integer id) {
 		Optional<Paciente> paciente = repository.findById(id);
 
-		paciente.ifPresent(Paciente::inativar);
-
-		return ResponseEntity.noContent().build();
+		if (paciente.isPresent()) {
+			paciente.get().inativar();
+			return ResponseEntity.noContent().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 }

@@ -25,9 +25,11 @@ public class MedicoController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<MedicoRecord> getMedico(@PathVariable Integer id) {
-		var medico = repository.getReferenceById(id);
+		var medico = repository.findById(id);
 
-		return ResponseEntity.ok(new MedicoRecord(medico));
+		return medico.map(value -> ResponseEntity.ok(new MedicoRecord(value))).
+				orElseGet(() -> ResponseEntity.notFound().build()
+		);
 	}
 
 	@GetMapping
@@ -53,9 +55,10 @@ public class MedicoController {
 
 		if (medico.isPresent()) {
 			medico.get().updateInfo(record);
+			return ResponseEntity.ok(new DetalhamentoMedico(medico.get()));
+		} else {
+			return ResponseEntity.notFound().build();
 		}
-
-		return ResponseEntity.ok(new DetalhamentoMedico(medico.get()));
 	}
 
 	@DeleteMapping(path = "/{id}")
@@ -65,8 +68,9 @@ public class MedicoController {
 
 		if (medico.isPresent()) {
 			medico.get().inativar();
+			return ResponseEntity.noContent().build();
+		} else {
+			return ResponseEntity.notFound().build();
 		}
-
-		return ResponseEntity.noContent().build();
 	}
 }

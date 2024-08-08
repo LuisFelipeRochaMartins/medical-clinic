@@ -1,5 +1,7 @@
 package com.github.luisfelipetochamartins.medical.clini.usuario;
 
+import com.github.luisfelipetochamartins.medical.clini.infra.security.TokenJWTRecord;
+import com.github.luisfelipetochamartins.medical.clini.infra.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,18 +16,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/login")
 public class AuthController {
 
-	private AuthenticationManager manager;
+	private final AuthenticationManager manager;
+	private final TokenService tokenService;
 
 	@Autowired
-	public AuthController(AuthenticationManager manager) {
+	public AuthController(AuthenticationManager manager, TokenService tokenService) {
 		this.manager = manager;
+		this.tokenService = tokenService;
 	}
 
 	@PostMapping
 	public ResponseEntity login(@RequestBody @Valid AuthRecord auth) {
-		var token = new UsernamePasswordAuthenticationToken(auth.usuario(), auth.senha());
-		var authentication = manager.authenticate(token);
+		var authenticationToken = new UsernamePasswordAuthenticationToken(auth.usuario(), auth.senha());
+		var authentication = manager.authenticate(authenticationToken);
 
-		return ResponseEntity.ok().build();
+		var tokenJWT = tokenService.generateToken((Usuario) authentication.getPrincipal());
+
+		return ResponseEntity.ok(new TokenJWTRecord(tokenJWT));
 	}
 }

@@ -1,4 +1,4 @@
-package com.github.luisfelipetochamartins.medical.clini.infra;
+package com.github.luisfelipetochamartins.medical.clini.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;

@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(name = "/pacientes")
+@RequestMapping(path = "/pacientes")
 public class PacienteController {
 
 	private final PacienteRepository repository;
@@ -64,7 +64,7 @@ public class PacienteController {
 		}
 	}
 
-	@DeleteMapping
+	@DeleteMapping(path = "/{id}")
 	@Transactional
 	public ResponseEntity delete(@PathVariable Integer id) {
 		Optional<Paciente> paciente = repository.findById(id);

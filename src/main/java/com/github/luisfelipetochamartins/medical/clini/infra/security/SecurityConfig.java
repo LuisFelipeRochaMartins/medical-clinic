@@ -1,4 +1,4 @@
-package com.github.luisfelipetochamartins.medical.clini.infra.exception.security;
+package com.github.luisfelipetochamartins.medical.clini.infra.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

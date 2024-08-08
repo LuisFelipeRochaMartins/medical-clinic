@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(name = "/login")
+@RequestMapping(path = "/login")
 public class AuthController {
 
-	private final AuthenticationManager manager;
+	private AuthenticationManager manager;
 
 	@Autowired
 	public AuthController(AuthenticationManager manager) {

@@ -4,7 +4,7 @@ package com.github.luisfelipetochamartins.medical.clini.medicos;
 import com.github.luisfelipetochamartins.medical.clini.endereco.Endereco;
 import jakarta.persistence.*;
 
-@Entity
+@Entity(name = "Medico")
 @Table(name = "medicos")
 public class Medico {
 

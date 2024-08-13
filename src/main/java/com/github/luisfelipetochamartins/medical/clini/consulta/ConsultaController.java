@@ -1,5 +1,6 @@
 package com.github.luisfelipetochamartins.medical.clini.consulta;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/consultas")
+@SecurityRequirement(name = "beared-key")
 public class ConsultaController {
 
 	private final ConsultaService service;

@@ -18,7 +18,7 @@ public class ValidacaoPacienteSemConsultaNoDia implements ValidadorAgendamentoCo
 	}
 
 	@Override
-	public void validarHorario(ConsultaRecord record) {
+	public void validar(ConsultaRecord record) {
 		LocalDateTime primeiroHorario = record.data().withHour(7);
 		LocalDateTime ultimoHorario = record.data().withHour(7);
 

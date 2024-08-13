@@ -1,5 +1,6 @@
 package com.github.luisfelipetochamartins.medical.clini.medicos;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/medicos")
+@SecurityRequirement(name = "beared-key")
 public class MedicoController {
 
 	private final MedicoRepository repository;

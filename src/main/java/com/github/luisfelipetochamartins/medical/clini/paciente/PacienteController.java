@@ -1,5 +1,7 @@
 package com.github.luisfelipetochamartins.medical.clini.paciente;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/pacientes")
+@SecurityRequirement(name = "beared-key")
 public class PacienteController {
 
 	private final PacienteRepository repository;

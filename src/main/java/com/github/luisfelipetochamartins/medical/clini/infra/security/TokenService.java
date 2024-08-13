@@ -3,6 +3,7 @@ package com.github.luisfelipetochamartins.medical.clini.infra.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.github.luisfelipetochamartins.medical.clini.infra.exception.ValidacaoException;
 import com.github.luisfelipetochamartins.medical.clini.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class TokenService {
 					.verify(tokenJWT)
 					.getSubject();
 		} catch (JWTCreationException exception){
-			throw new RuntimeException("Token JWT inválido ou inspirado!");
+			throw new ValidacaoException("Token JWT inválido ou inspirado!");
 		}
 	}
 }

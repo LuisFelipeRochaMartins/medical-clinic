@@ -1,6 +1,5 @@
 package com.github.luisfelipetochamartins.medical.clini.consulta;
 
-import com.github.luisfelipetochamartins.medical.clini.consulta.ConsultaRepository;
 import com.github.luisfelipetochamartins.medical.clini.consulta.validacao.ValidadorAgendamentoConsulta;
 import com.github.luisfelipetochamartins.medical.clini.infra.exception.ValidacaoException;
 import com.github.luisfelipetochamartins.medical.clini.medicos.Medico;
@@ -42,7 +41,7 @@ public class ConsultaService {
 			repository.save(new Consulta(null, medicoAleatorio(record), paciente.get(), record.data(), null));
 		}
 
-		validadores.forEach(v -> v.validarHorario(record));
+		validadores.forEach(v -> v.validar(record));
 
 		var consulta = new Consulta(null, medico.get(), paciente.get(), record.data(), null);
 
@@ -53,7 +52,7 @@ public class ConsultaService {
 
 	public void cancelar(ConsultaCancelamentoRecord record) {
 		if (!repository.existsById(record.id())) {
-			throw new RuntimeException("id da consulta informado não existe");
+			throw new ValidacaoException("id da consulta informado não existe");
 		}
 
 		var consulta = repository.getReferenceById(record.id());
@@ -62,7 +61,7 @@ public class ConsultaService {
 
 	private Medico medicoAleatorio(ConsultaRecord record) {
 		if (record.especialidade() == null) {
-			throw new RuntimeException("Especialidade é obrigatório quando não informado o médico");
+			throw new ValidacaoException("Especialidade é obrigatório quando não informado o médico");
 		}
 
 		return medicoRepository.medicoAleatorioLivreData(record.especialidade(), record.data());

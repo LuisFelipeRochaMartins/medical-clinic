@@ -4,5 +4,5 @@ import com.github.luisfelipetochamartins.medical.clini.consulta.ConsultaRecord;
 
 public interface ValidadorAgendamentoConsulta {
 
-	void validarHorario(ConsultaRecord record);
+	void validar(ConsultaRecord record);
 }

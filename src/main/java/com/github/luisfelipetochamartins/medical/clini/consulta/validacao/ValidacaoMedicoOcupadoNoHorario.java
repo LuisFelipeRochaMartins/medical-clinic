@@ -2,6 +2,7 @@ package com.github.luisfelipetochamartins.medical.clini.consulta.validacao;
 
 import com.github.luisfelipetochamartins.medical.clini.consulta.ConsultaRecord;
 import com.github.luisfelipetochamartins.medical.clini.consulta.ConsultaRepository;
+import com.github.luisfelipetochamartins.medical.clini.infra.exception.ValidacaoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +17,11 @@ public class ValidacaoMedicoOcupadoNoHorario implements ValidadorAgendamentoCons
 	}
 
 	@Override
-	public void validarHorario(ConsultaRecord record) {
+	public void validar(ConsultaRecord record) {
 		boolean medicoOcupadoNoHorario = repository.existsByMedicoIdAndData(record.idMedico(), record.data());
 
 		if (medicoOcupadoNoHorario) {
-			throw new RuntimeException("Médico já possui outra consulta agendada no horário!");
+			throw new ValidacaoException("Médico já possui outra consulta agendada no horário!");
 		}
 	}
 }

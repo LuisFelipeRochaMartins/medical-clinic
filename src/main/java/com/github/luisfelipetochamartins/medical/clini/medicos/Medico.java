@@ -46,6 +46,15 @@ public class Medico {
 		this.endereco = new Endereco(record.endereco());
 	}
 
+	public Medico(MedicoCadastroRecord record) {
+		this.nome = record.nome();
+		this.email = record.email();
+		this.crm = record.crm();
+		this.especialidade = record.especialidade();
+		this.telefone = record.telefone();
+		this.endereco = new Endereco(record.enderecoRecord());
+	}
+
 	public Integer getId() {
 		return id;
 	}

@@ -6,6 +6,8 @@ import com.github.luisfelipetochamartins.medical.clini.medicos.Medico;
 import com.github.luisfelipetochamartins.medical.clini.medicos.MedicoRepository;
 import com.github.luisfelipetochamartins.medical.clini.paciente.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +30,10 @@ public class ConsultaService {
 		this.validadores = validadores;
 	}
 
+	public Page<DetalhamentoConsulta> getAllConsultas(Pageable page) {
+		var pages = repository.findAll(page).map(DetalhamentoConsulta::new);
+		return pages;
+	}
 
 	public DetalhamentoConsulta agendar(ConsultaRecord record) {
 		var paciente = pacienteRepository.findById(record.idPaciente());

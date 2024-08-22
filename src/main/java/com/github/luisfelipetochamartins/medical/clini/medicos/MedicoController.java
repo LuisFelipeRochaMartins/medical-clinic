@@ -65,7 +65,7 @@ public class MedicoController {
 
 	@DeleteMapping(path = "/{id}")
 	@Transactional
-	public ResponseEntity delete(@PathVariable Integer id) {
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		Optional<Medico> medico = repository.findById(id);
 
 		if (medico.isPresent()) {

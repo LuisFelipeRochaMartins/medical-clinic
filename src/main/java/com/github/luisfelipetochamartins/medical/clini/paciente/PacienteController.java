@@ -30,11 +30,8 @@ public class PacienteController {
 	public ResponseEntity<DetalhamentoPaciente> getPaciente(@PathVariable Integer id) {
 		var paciente = repository.findById(id);
 
-		if (paciente.isPresent()) {
-			return ResponseEntity.ok(new DetalhamentoPaciente(paciente.get()));
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return paciente.map(value -> ResponseEntity.ok(new DetalhamentoPaciente(value)))
+				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@GetMapping
@@ -69,7 +66,7 @@ public class PacienteController {
 
 	@DeleteMapping(path = "/{id}")
 	@Transactional
-	public ResponseEntity delete(@PathVariable Integer id) {
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		Optional<Paciente> paciente = repository.findById(id);
 
 		if (paciente.isPresent()) {

@@ -30,7 +30,7 @@ public class ConsultaController {
 	}
 
 	@PostMapping
-	public ResponseEntity agendarConsulta(@RequestBody @Valid ConsultaRecord record) {
+	public ResponseEntity<DetalhamentoConsulta> agendarConsulta(@RequestBody @Valid ConsultaRecord record) {
 		var consulta = service.agendar(record);
 
 		return ResponseEntity.ok(consulta);

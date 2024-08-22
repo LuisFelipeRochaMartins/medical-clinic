@@ -1,7 +1,6 @@
 package com.github.luisfelipetochamartins.medical.clini.paciente;
 
 import com.github.luisfelipetochamartins.medical.clini.endereco.Endereco;
-import com.github.luisfelipetochamartins.medical.clini.medicos.Especialidade;
 
 public record DetalhamentoPaciente(Integer id,
                                    String nome,

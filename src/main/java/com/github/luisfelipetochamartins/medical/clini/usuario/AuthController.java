@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ public class AuthController {
 	}
 
 	@PostMapping
-	public ResponseEntity login(@RequestBody @Valid AuthRecord auth) {
+	public ResponseEntity<TokenJWTRecord> login(@RequestBody @Valid AuthRecord auth) {
 		var authenticationToken = new UsernamePasswordAuthenticationToken(auth.usuario(), auth.senha());
 		var authentication = manager.authenticate(authenticationToken);
 
